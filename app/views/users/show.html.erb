@@ -1,0 +1,39 @@
+<p>
+	<strong><%= @user.name %></strong>
+</p>
+
+<label for="secret">New Secret</label>
+	<form action='/secrets' method='post' >
+		<textarea name='content' id="New Secret"></textarea>
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" /><br>
+		<input type='hidden' name='id' value='<%= @user.id  %>'>
+		<input type='submit' value='Create Secret'>
+	</form>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+		<h6>Secrets</h6>
+			<% @user.secrets.each do |s| %>
+				<p><%= s.content %></p>
+				<p><%= s.likes.count %> likes</p>
+					<form action="/secrets/<%=s.id%>" method="post">
+							<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+							<input type="hidden" name="id" value='<%= s.id  %>' >
+							<input type="hidden" name="_method" value="delete">
+							<button type="submit" value="Delete">Delete</button>
+					</form>
+			<% end %>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<h6>Secrets Liked</h6>
+			<% @user.secrets.each do |s| %>
+				<%= s.content %>
+			<% end %>
+		</div>
+	</div>
+</div>
+					
+
+<a href='<%= @user.id %>/edit'>Edit Profile</a>
